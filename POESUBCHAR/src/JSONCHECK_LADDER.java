@@ -1,9 +1,8 @@
-import java.io.BufferedReader;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 
-import com.google.gson.*;
 
 import com.google.gson.stream.JsonReader;
 
@@ -76,9 +75,9 @@ public class JSONCHECK_LADDER {
 		return new ACCOUNTCHARACTER();
 	}
 
-	public void read_json(StringReader br) throws IOException
+	public void read_json(StringReader sr) throws IOException
 	{
-		json_reader = new JsonReader(br);
+		json_reader = new JsonReader(sr);
 		ACCOUNTCHARACTER character = null;
 		json_reader.beginObject();
 

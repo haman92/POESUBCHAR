@@ -22,6 +22,7 @@ public class CatchLadder extends Thread{
 	private JSONCHECK_LADDER check;
 	private URL url;
 	private JsonReader jsonread;
+	private NetworkConnection n_conn;
 	public CatchLadder()
 	{
 		this.conn = null;
@@ -38,29 +39,15 @@ public class CatchLadder extends Thread{
 		{
 			String url_string="http://api.pathofexile.com/ladders/Blight?type=labyrinth&realm=pc&difficulty=Cruel&limit=1";
 			url = new URL(url_string);
-			sbuf = new StringBuffer();
 
 		} catch (MalformedURLException e2) {
 			e2.printStackTrace();
 		}
 		try 
 		{
-			conn= (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("GET");
-			conn.setReadTimeout(1000);
-			conn.setConnectTimeout(1000);
-			conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows 10;) Chrome/16.0.912.75 Safari/535.7");
-			stream = conn.getInputStream();
-			InputStreamReader isr = new InputStreamReader(stream, "utf-8");
-			BufferedReader br = new BufferedReader(isr);
-			String str ;
-			while((str=br.readLine()) != null){
+			n_conn = new NetworkConnection();
 
-				sbuf.append(str + "\r\n") ;
-
-			}
-			stream.close();
-			String input = sbuf.toString();
+			String input = n_conn.urlReader(url);
 			StringReader str_reader = new StringReader(input);
 			jsonread = new JsonReader(str_reader);
 			jsonread.beginObject();
@@ -75,13 +62,6 @@ public class CatchLadder extends Thread{
 
 		}catch (IOException e1) {
 			e1.printStackTrace();
-		}finally
-		{
-			try {
-				stream.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		}
 
 		return total;
@@ -117,53 +97,27 @@ public class CatchLadder extends Thread{
 
 			try 
 			{
-				conn= (HttpURLConnection) url.openConnection();
-				conn.setRequestMethod("GET");
-				conn.setReadTimeout(5000);
-				conn.setConnectTimeout(5000);
+				n_conn = new NetworkConnection();
 
-				//헤더 세팅 안해주면 받아오지 못함. 403
-				conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows 10;) Chrome/16.0.912.75 Safari/535.7");
-
-
-				stream = conn.getInputStream();
-				InputStreamReader isr = new InputStreamReader(stream, "utf-8");
-				BufferedReader br = new BufferedReader(isr);
-
-
-
-				String str ;
-				while((str=br.readLine()) != null){
-
-					sbuf.append(str + "\r\n") ;
-
-				}
-
-				stream.close();
-
-				String input = sbuf.toString();
+				String input = n_conn.urlReader(url);
 				StringReader str_reader = new StringReader(input);
 				check.read_json(str_reader);
 
 
-				Thread.sleep(1000);
+				//Thread.sleep(1000);
 
-			} catch (InterruptedException e) {
+			}
+			/*
+			catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 
 				e.printStackTrace();
 
-			}catch (IOException e1) {
+			}
+			*/
+			catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			}finally
-			{
-				try {
-					stream.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 			}
 
 		}
