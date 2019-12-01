@@ -72,7 +72,7 @@ public class CatchCHARACTER extends Thread{
 
 			String input = n_conn.urlReader(url);
 			StringReader str_reader = new StringReader(input);
-			check.read_json(str_reader,acc);
+			acc = check.read_json(str_reader,acc);
 			Thread.sleep(1000);
 
 		} catch (InterruptedException e) {
@@ -124,14 +124,7 @@ public class CatchCHARACTER extends Thread{
 		}
 
 	}
-/*	
-	public boolean isDirect() {
-		return direct;
-	}
-	public void setDirect(boolean direct) {
-		this.direct = direct;
-	}
-*/
+	
 	public String getGetaccount_ID() {
 		return getaccount_ID;
 	}

@@ -3,6 +3,8 @@ public class GEM {
 
 	private String gem_name;
 	private boolean support;
+	private boolean aura_herald_curse;
+	
 	//private boolean active;
 	private int group_number;
 	public GEM()
@@ -39,5 +41,13 @@ public class GEM {
 	public void setGroup_number(int group_number) {
 		this.group_number = group_number;
 	}
-	
+
+	public boolean isAura_herald_curse() {
+		return aura_herald_curse;
+	}
+
+	public void setAura_herald_curse(boolean aura_herald_curse) {
+		this.aura_herald_curse = aura_herald_curse;
+	}
+
 }

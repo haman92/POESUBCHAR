@@ -263,13 +263,27 @@ public class JSONCHECK_LADDER {
 			if(read_temp_account.equals("name"))
 			{
 				add.setAccount_name(json_reader.nextString());
-			} else 
+			}
+			else if(read_temp_account.equals("twitch"))
+			{
+				add.setTwitch_ID(read_twitch(json_reader,add));
+			}
+			else 
 			{
 				json_reader.skipValue();
 			}
 		}
 		json_reader.endObject();
 		return add;
+	}
+	public String read_twitch(JsonReader json_reader, ACCOUNTCHARACTER add) throws IOException
+	{
+		json_reader.beginObject();
+		String read_temp=null;
+		json_reader.nextName();
+		read_temp = json_reader.nextString();
+		json_reader.endObject();
+		return read_temp;
 	}
 	private void add_ArrayList(ACCOUNTCHARACTER add)
 	{

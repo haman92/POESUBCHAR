@@ -13,7 +13,8 @@ public class JSONCHECK_CHARACTER {
 	{
 		json_reader = null;
 	}
-	public void read_json(StringReader sr, ACCOUNTCHARACTER character) throws IOException
+	
+	public ACCOUNTCHARACTER read_json(StringReader sr, ACCOUNTCHARACTER character) throws IOException
 	{
 		String read_temp;
 		json_reader = new JsonReader(sr);
@@ -30,113 +31,20 @@ public class JSONCHECK_CHARACTER {
 			}
 		}
 		json_reader.endObject();
+		
+		for(ITEM temp: character.getUnique_item_list())
+		{
+			System.out.println(temp.getItem_name());
+		}
+		return character;
 	}
 	
-	/*
-	 * Item{
-			verified	boolean
-			true if the item has not changed since it was linked.
-			
-			w	number
-			Width of the item in inventory tiles.
-			
-			h	number
-			Height of the item in inventory tiles.
-			
-			ilvl	number
-			item level
-			
-			icon	string
-			url to the image of the item
-			
-			league	string
-			league identifier
-			
-			id	string($uuid)
-			elder	boolean
-			true if the item can have elder mods (elder background).
-			
-			shaper	boolean
-			true if the item can have shaper mods (shaper background).
-			
-			fractured	boolean
-			true if the item can have fractured mods (fractured background).
-			
-			sockets	{...}
-			name	string
-			unique name of the item
-			
-			typeLine	string
-			name of the baseitem (+prefix/suffix if existing)
-			
-			identified	boolean
-			true if the item is identified
-			
-			corrupted	boolean
-			true if the item is corrupted
-			
-			properties	[...]
-			utilityMods	[...]
-			explicitMods	[...]
-			craftedMods	[...]
-			enchantMods	[...]
-			fracturedMods	[...]
-			flavourText	[...]
-			descrText	string
-			description
-			
-			secDescrText	string
-			secondary description
-			
-			frameType	number
-			Frame "color" of the item depending on rarity, item type (e.g. gem) etc. Possible values with examples:
-			
-			0 - normal items
-			1 - magic items
-			2 - rare items
-			3 - unique items
-			4 - gems
-			Enum:
-			Array [ 5 ]
-			category	{...}
-			x	number
-			X coordinate in the specified frame.
-			
-			y	number
-			Y coordinate in the specified frame.
-			
-			inventoryId	string
-			Id of the slot where this item is located. StashX for stash number X. BodyArmour, Flask etc for actual inventory slots.
-			
-			isRelic	boolean
-			true if the item is a relic item (introduced in Legacy league).
-			
-			socketetedItems	[...]
-			socket	number
-			Socket index in the parent item in which this item is socketed.
-			
-			colour	string
-			gem colour (originates from attribute requirement):
-			
-			D - green
-			I - blue
-			S - red
-			G - white
-			Enum:
-			Array [ 4 ]
-			}
-			
-			need FrameType
-			need name
-			need socketedItems
-			need socktes
-			need sockets.group
-	 */
 	
 	public void read_item(JsonReader json_reader, ACCOUNTCHARACTER character) throws IOException
 	{
 		String read_item_temp;
 		ITEM temp_item = new ITEM();
+		boolean hassocket = false;
 		json_reader.beginObject();
 		
 		while(json_reader.hasNext()==true)
@@ -145,9 +53,9 @@ public class JSONCHECK_CHARACTER {
 			//System.out.println(read_item_temp);
 			if(read_item_temp.equals("frameType"))//유니크 체크
 			{
-				if(json_reader.nextInt()==4)
+				if(json_reader.nextInt()==3)
 				{
-					temp_item.setItem_type(4);
+					temp_item.setItem_type(3);
 				}
 				
 				
@@ -155,6 +63,7 @@ public class JSONCHECK_CHARACTER {
 			else if(read_item_temp.equals("sockets"))
 			{
 				temp_item = this.read_socket(json_reader, temp_item);
+				hassocket = true;
 			}
 			else if(read_item_temp.equals("inventoryId"))// 부위 체크
 			{
@@ -179,25 +88,23 @@ public class JSONCHECK_CHARACTER {
 			{
 				json_reader.skipValue();
 			}
-			/*
-			if(read_item_temp.equals("frameType"))
-			{
-				
-			}
-			if(read_item_temp.equals("frameType"))
-			{
-				
-			}
-			*/
 			
+		}
+		
+		json_reader.endObject();
+		
+		
+		if(hassocket)
+		{
+			character.add_socket_item(temp_item);
 		}
 		
 		if(temp_item.getItem_type()==3)
 		{
-			character.getUnique_item_list().add(temp_item);
+			character.add_Unique_item(temp_item);
+			
 		}
 		
-		json_reader.endObject();
 	}
 	public ITEM read_socket(JsonReader json_reader, ITEM item) throws IOException
 	{
@@ -223,8 +130,7 @@ public class JSONCHECK_CHARACTER {
 			
 			json_reader.endObject();
 		}
-		System.out.println(sockettemp1.length());
-		System.out.println(sockettemp1);
+		//item.item_Link_Check(sockettemp1);
 		item.setSockets(sockettemp1);
 		json_reader.endArray();
 		return item;
@@ -236,7 +142,8 @@ public class JSONCHECK_CHARACTER {
 		json_reader.beginArray();
 		while(json_reader.hasNext()==true)
 		{
-			read_socketgems(json_reader);
+			GEM gem =read_socketgems(json_reader);
+			item.add_gems(gem);
 		}
 		
 		json_reader.endArray();
@@ -261,7 +168,12 @@ public class JSONCHECK_CHARACTER {
 			else if(read_temp.equals("socket"))
 			{
 				temp_gem.setGroup_number(json_reader.nextInt());
-			}else
+			}
+			else if(read_temp.equals("properties"))
+			{
+				temp_gem = read_gem_properties(json_reader,temp_gem);
+			}
+			else
 			{
 				json_reader.skipValue();
 			}
@@ -269,6 +181,48 @@ public class JSONCHECK_CHARACTER {
 		json_reader.endObject();
 		
 		return temp_gem;
+	}
+	public GEM read_gem_properties(JsonReader json_reader, GEM gem) throws IOException
+	{
+		
+		String read_temp = null;
+		json_reader.beginArray();
+
+		while(json_reader.hasNext()==true)
+		{
+			gem =read_gem_properties_in(json_reader, gem);	
+		}
+			
+
+		json_reader.endArray();
+		return gem;
+		
+	}
+	
+	public GEM read_gem_properties_in(JsonReader json_reader, GEM gem) throws IOException
+	{
+		json_reader.beginObject();
+		String read_temp=null;
+		while(json_reader.hasNext()==true)
+		{
+			//System.out.println(json_reader.nextString());
+			read_temp = json_reader.nextName();
+			if(read_temp.equals("name"))
+			{
+				read_temp=json_reader.nextString();
+				if(read_temp.contains("herald")==true || read_temp.contains("Aura") || read_temp.contains("Curse"))
+				{
+					gem.setAura_herald_curse(true);
+					
+				}
+			}else
+			{
+				json_reader.skipValue();
+			}
+		}
+		json_reader.endObject();
+		return gem;
+		
 	}
 	
 	public void read_itemarray(JsonReader json_reader, ACCOUNTCHARACTER character) throws IOException

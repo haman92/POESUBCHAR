@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 //import java.util.ArrayList;
 public class ITEM {
 /*
@@ -12,6 +14,40 @@ public class ITEM {
 	private String item_name;
 	private String item_base_type;
 	private String sockets;
+	private ArrayList<GEM> socketed_gems;
+	public ITEM()
+	{
+		this.socketed_gems = new ArrayList<GEM>();
+	}
+	
+	public void add_gems(GEM gem)
+	{
+		this.socketed_gems.add(gem);
+	}
+	
+	public int item_Link_Check(String socket_group)
+	{
+		int length = socket_group.length();
+		int count[] = new int[length];
+		int temp_max=-1;
+		for(int i=0;i<length;i++)
+		{
+			
+			for(int j = 0;j<length;j++)
+			{
+				if(socket_group.charAt(j)==(char)(i+48))
+				{
+					count[i]++;
+				}
+			}
+			if(temp_max<count[i])
+			{
+				temp_max=count[i];
+			}
+		}
+		return temp_max;
+	}
+	
 	
 	public int getItem_type() {
 		return item_type;
