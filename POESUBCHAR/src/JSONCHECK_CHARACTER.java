@@ -32,10 +32,23 @@ public class JSONCHECK_CHARACTER {
 		}
 		json_reader.endObject();
 		
-		for(ITEM temp: character.getUnique_item_list())
+		character.check_socketitem_gems();
+		/*
+		System.out.println("unique");
+		for(ITEM temp : character.getUnique_item_list())
 		{
 			System.out.println(temp.getItem_name());
 		}
+		System.out.println("Hearld_aura_curse");
+		for(String temp : character.getHearld_aura_curse_list())
+		{
+			System.out.println(temp);
+		}
+		System.out.println("Active_skill > 4Link");
+		for(String temp : character.getActive_skill_list())
+		{
+			System.out.println(temp);
+		}*/
 		return character;
 	}
 	
@@ -68,6 +81,10 @@ public class JSONCHECK_CHARACTER {
 			else if(read_item_temp.equals("inventoryId"))// 부위 체크
 			{
 				String idtemp = json_reader.nextString();
+				if(idtemp.contains("offhand"))
+				{
+					
+				}
 				temp_item.setInventoryID(idtemp);
 				
 			}
@@ -185,7 +202,6 @@ public class JSONCHECK_CHARACTER {
 	public GEM read_gem_properties(JsonReader json_reader, GEM gem) throws IOException
 	{
 		
-		String read_temp = null;
 		json_reader.beginArray();
 
 		while(json_reader.hasNext()==true)

@@ -1,46 +1,50 @@
 
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.File;
 
 import com.google.gson.stream.JsonReader;
 
-public class CatchCHARACTER extends Thread{
-	private HttpURLConnection conn;
-	private StringBuffer sbuf;
-	private InputStream stream;
+public class CatchCHARACTER {
 	private NetworkConnection n_conn;
 	private URL url;
 	private JsonReader jsonread;
-	private ArrayList<ACCOUNTCHARACTER> array[];
 	private String getcharacter_name;
 	private JSONCHECK_CHARACTER check;
 	private String getaccount_ID;
+	private ArrayList<ACCOUNTCHARACTER>[] account_array;
+	private FileWriter fwriter;
+	private BufferedWriter bwriter;
+	private int forbidden_count;
 	//private boolean direct;
-	
+
 	public CatchCHARACTER()
 	{
-		
+		this.forbidden_count=0;
 		n_conn = new NetworkConnection();
 		this.check = new JSONCHECK_CHARACTER();
 	}
 	public CatchCHARACTER(String character_ID, String account_ID)
 	{
+		this.forbidden_count=0;
 		this.setGetaccount_ID(account_ID);
+		n_conn = new NetworkConnection();
 
-		
+
 		this.check = new JSONCHECK_CHARACTER();
 	}
 	public CatchCHARACTER(ArrayList<ACCOUNTCHARACTER>[] read_array)
 	{
-		this.array = read_array;
+		this.forbidden_count=0;
+		n_conn = new NetworkConnection();
+
+		this.account_array= read_array;
 		this.check = new JSONCHECK_CHARACTER();
 	}
 
@@ -48,15 +52,15 @@ public class CatchCHARACTER extends Thread{
 	public void getOneCharacter()
 	{
 		String url_string=null;
-		
-		
+
+
 		ACCOUNTCHARACTER acc = new ACCOUNTCHARACTER("haman2","blight_trapcard_wintero");
 
 		String acc_ID = this.getGetaccount_ID();
 		String cha_name= this.getGetcharacter_name();
 		//ACCOUNTCHARACTER acc = new ACCOUNTCHARACTER(acc_ID,cha_name);
 
-		url_string="https://www.pathofexile.com/character-window/get-items?accountName=haman92&character=blight_trapcard_wintero";
+		url_string="https://www.pathofexile.com/character-window/get-items?accountName=Havoc6&character=HavocZM";
 		//url_string="https://www.pathofexile.com/character-window/get-items?accountName="+acc_ID+"&character="+cha_name;
 		try {
 			url = new URL(url_string);
@@ -64,14 +68,19 @@ public class CatchCHARACTER extends Thread{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		sbuf = new StringBuffer();
-
 
 		try 
 		{
 
 			String input = n_conn.urlReader(url);
 			StringReader str_reader = new StringReader(input);
+			if(input.contains("Forbidden"))
+			{
+				
+				System.out.println("Forbidden");
+				Thread.sleep(1000);
+				return;
+			}
 			acc = check.read_json(str_reader,acc);
 			Thread.sleep(1000);
 
@@ -81,50 +90,112 @@ public class CatchCHARACTER extends Thread{
 		}catch (IOException e1) {
 			e1.printStackTrace();
 		}
-
 	}
-	
-	public void run()
+
+	public void run() 
 	{
 		String url_string=null;
-		ACCOUNTCHARACTER character = new ACCOUNTCHARACTER();
-		character.setCharacter_name("blight_trapcard_wintero");
-		character.setAccount_name("haman92");
 
-		String acc_ID = this.getGetaccount_ID();
-		String cha_name= this.getGetcharacter_name();
-		url_string="https://www.pathofexile.com/character-window/get-items?accountName=haman92&character=blight_trapcard_wintero";
-		//url_string="https://www.pathofexile.com/character-window/get-items?accountName="+acc_ID+"&character="+cha_name;
+		for(ArrayList<ACCOUNTCHARACTER> temp_arr:this.account_array)
+		{
+			for(ACCOUNTCHARACTER temp_acc : temp_arr)
+			{
+
+				try
+				{
+
+					Thread.sleep(700);
+				}catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+
+				String acc_ID = temp_acc.getAccount_name();
+				String cha_name = temp_acc.getCharacter_name();
+
+				url_string = "https://www.pathofexile.com/character-window/get-items?accountName="+acc_ID+"&character="+cha_name;
+				try {
+					url = new URL(url_string);
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+
+				String input;
+				try {
+					input = n_conn.urlReader(url);
+
+					StringReader str_reader = new StringReader(input);
+					if(input.contains("Forbidden"))
+					{
+						System.out.println("ID "+acc_ID+"c_name "+cha_name);
+						this.forbidden_count++;
+						System.out.println("Forbidden");
+						continue;
+					}
+					temp_acc = check.read_json(str_reader,temp_acc);
+
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		}
+
+		//this.fwriter = new FileWriter();
+		/*
+		File file = new File("12.02.txt");
 		try {
-			url = new URL(url_string);
-		} catch (MalformedURLException e) {
+			this.bwriter = new BufferedWriter(new FileWriter(file,false));
+			for(ArrayList<ACCOUNTCHARACTER> temp_array:this.account_array)
+			{
+				for(ACCOUNTCHARACTER temp_acc:temp_array)
+				{
+					if(temp_acc.getHas_sockte_item_list().size()==0)
+					{
+						continue;
+					}
+					bwriter.write(temp_acc.getCharacter_name()+" "+temp_acc.getCharacter_class()+" ");
+					bwriter.write("Active_Skill");
+					for(String temp :temp_acc.getActive_skill_list())
+					{
+						bwriter.write(" ");
+						bwriter.write(temp);
+
+					}
+
+					bwriter.write(" ");
+					bwriter.write("Herald_aura_curse");
+					for(String temp : temp_acc.getHearld_aura_curse_list())
+					{
+						bwriter.write(" ");
+						bwriter.write(temp);
+					}
+					bwriter.write(" ");
+					bwriter.write("Unique");
+					for(ITEM temp: temp_acc.getUnique_item_list())
+					{
+						bwriter.write(" ");
+						bwriter.write(temp.getItem_name());
+					}
+					bwriter.newLine();
+
+				}
+			}
+			this.bwriter.close();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		sbuf = new StringBuffer();
+		*/
 
+		System.out.println("forbiddencount "+this.forbidden_count);
 
-
-		try 
-		{
-
-			String input = n_conn.urlReader(url);
-			StringReader str_reader = new StringReader(input);
-			jsonread = new JsonReader(str_reader);
-			jsonread.beginObject();
-			jsonread.nextName();
-			jsonread=null;
-			Thread.sleep(1000);
-
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-
-		}catch (IOException e1) {
-			e1.printStackTrace();
-		}
 
 	}
-	
+
 	public String getGetaccount_ID() {
 		return getaccount_ID;
 	}
@@ -138,3 +209,7 @@ public class CatchCHARACTER extends Thread{
 		this.getcharacter_name = getcharacter_name;
 	}
 }
+//forbiddencount 879 1000
+//forbiddencount 1061 700
+//forbiddencount 1177 500
+//forbiddencount 1359 300

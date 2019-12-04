@@ -33,7 +33,10 @@ public class JSONCHECK_LADDER {
 	private int saboteur;//saboteur
 	private int trickster;//trickster
 	private int ascendant;
+	
+	
 	public ArrayList<ACCOUNTCHARACTER>[] getArray()
+	
 	{
 		return array;
 	}
@@ -63,7 +66,9 @@ public class JSONCHECK_LADDER {
 		this.setRaider(0);
 		this.setSaboteur(0);
 		this.setSlayer(0);
+		
 		array = (ArrayList<ACCOUNTCHARACTER>[])new ArrayList[16];
+		
 		for(int i =0 ;i<16;i++)
 		{
 			array[i] = new ArrayList<ACCOUNTCHARACTER>();

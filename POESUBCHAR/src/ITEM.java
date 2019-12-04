@@ -79,6 +79,10 @@ public class ITEM {
 	public void setSockets(String sockets) {
 		this.sockets = sockets;
 	}
+	public ArrayList<GEM> getSocketed_gems()
+	{
+		return this.socketed_gems;
+	}
 	
 	/*
 	private ArrayList<String> item_implicit;

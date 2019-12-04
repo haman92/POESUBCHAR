@@ -21,7 +21,14 @@ public class NetworkConnection {
 		conn.setConnectTimeout(3000);
 		
 		conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows 10;) Chrome/16.0.912.75 Safari/535.7");
-		stream = conn.getInputStream();
+		try
+		{
+			stream = conn.getInputStream();
+		}catch(IOException E)
+		{
+			return "Forbidden";
+		}
+		
 		
 		InputStreamReader isr = new InputStreamReader(stream, "utf-8");
 		BufferedReader br = new BufferedReader(isr);
