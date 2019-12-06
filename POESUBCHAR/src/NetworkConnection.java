@@ -40,7 +40,7 @@ public class NetworkConnection {
 
 		}
 		
-		System.out.println("urlconnection complete");
+		//System.out.println("urlconnection complete");
 		stream.close();
 		conn.disconnect();
 		return sbuf.toString();

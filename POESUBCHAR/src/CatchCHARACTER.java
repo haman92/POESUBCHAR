@@ -14,7 +14,6 @@ import com.google.gson.stream.JsonReader;
 public class CatchCHARACTER {
 	private NetworkConnection n_conn;
 	private URL url;
-	private JsonReader jsonread;
 	private String getcharacter_name;
 	private JSONCHECK_CHARACTER check;
 	private String getaccount_ID;
@@ -22,6 +21,8 @@ public class CatchCHARACTER {
 	private FileWriter fwriter;
 	private BufferedWriter bwriter;
 	private int forbidden_count;
+	private String date;
+	private int total;
 	//private boolean direct;
 
 	public CatchCHARACTER()
@@ -30,20 +31,21 @@ public class CatchCHARACTER {
 		n_conn = new NetworkConnection();
 		this.check = new JSONCHECK_CHARACTER();
 	}
-	public CatchCHARACTER(String character_ID, String account_ID)
+	public CatchCHARACTER(String character_ID, String account_ID,int total1)
 	{
 		this.forbidden_count=0;
 		this.setGetaccount_ID(account_ID);
 		n_conn = new NetworkConnection();
 
-
+		this.total = total1;
 		this.check = new JSONCHECK_CHARACTER();
 	}
-	public CatchCHARACTER(ArrayList<ACCOUNTCHARACTER>[] read_array)
+	public CatchCHARACTER(ArrayList<ACCOUNTCHARACTER>[] read_array, String date_string, int total1)
 	{
 		this.forbidden_count=0;
 		n_conn = new NetworkConnection();
-
+		this.total = total1;
+		this.date = date_string;
 		this.account_array= read_array;
 		this.check = new JSONCHECK_CHARACTER();
 	}
@@ -76,7 +78,7 @@ public class CatchCHARACTER {
 			StringReader str_reader = new StringReader(input);
 			if(input.contains("Forbidden"))
 			{
-				
+
 				System.out.println("Forbidden");
 				Thread.sleep(1000);
 				return;
@@ -101,10 +103,12 @@ public class CatchCHARACTER {
 			for(ACCOUNTCHARACTER temp_acc : temp_arr)
 			{
 
+				//System.out.println(temp_acc.getCharacter_name());
+
 				try
 				{
 
-					Thread.sleep(700);
+					Thread.sleep(1000);
 				}catch(Exception e)
 				{
 					e.printStackTrace();
@@ -129,21 +133,43 @@ public class CatchCHARACTER {
 					StringReader str_reader = new StringReader(input);
 					if(input.contains("Forbidden"))
 					{
-						System.out.println("ID "+acc_ID+"c_name "+cha_name);
+						//System.out.println("ID "+acc_ID+"c_name "+cha_name);
 						this.forbidden_count++;
-						System.out.println("Forbidden");
+						//System.out.println("Forbidden");
 						continue;
 					}
+
 					temp_acc = check.read_json(str_reader,temp_acc);
 
+					DBConnection db = new DBConnection();
+					if(db.connect())
+					{
+						if(!db.insertpoecharacter(temp_acc, this.date))
+						{
+							System.out.println("poecharacter false");
+						}
+						if(!db.insertusing_activegem(temp_acc, this.date))
+						{
+							System.out.println("activegem false");
+						}
+						if(!db.insertusing_hearald_curse_aura(temp_acc, this.date))
+						{
+							System.out.println("herald_curse_aura false");
+						}
+						if(!db.insertusing_uniqueitem(temp_acc, this.date))
+						{
+							System.out.println("uniqueitem false");
+						}
+						db.close();
+					}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
+				
 			}
 		}
-
 		//this.fwriter = new FileWriter();
 		/*
 		File file = new File("12.02.txt");
@@ -189,10 +215,12 @@ public class CatchCHARACTER {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		*/
+		 */
 
 		System.out.println("forbiddencount "+this.forbidden_count);
 
+		int collect_count = this.total - this.forbidden_count;
+		System.out.println("collect count"+collect_count);
 
 	}
 
@@ -209,7 +237,10 @@ public class CatchCHARACTER {
 		this.getcharacter_name = getcharacter_name;
 	}
 }
-//forbiddencount 879 1000
+//524
+//forbiddencount 886 709 1500
+//forbiddencount 879 709 1000
+//forbiddencount     785 800
 //forbiddencount 1061 700
 //forbiddencount 1177 500
 //forbiddencount 1359 300

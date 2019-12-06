@@ -81,10 +81,6 @@ public class JSONCHECK_CHARACTER {
 			else if(read_item_temp.equals("inventoryId"))// 부위 체크
 			{
 				String idtemp = json_reader.nextString();
-				if(idtemp.contains("offhand"))
-				{
-					
-				}
 				temp_item.setInventoryID(idtemp);
 				
 			}
@@ -95,6 +91,12 @@ public class JSONCHECK_CHARACTER {
 			else if(read_item_temp.equals("name"))//유니크 이름 체크
 			{
 				String idtemp = json_reader.nextString();
+				char c = 39;
+				if(idtemp.contains(String.valueOf(c)))
+				{
+					idtemp = idtemp.replace("'", String.valueOf(c)+String.valueOf(c));
+					
+				}
 				temp_item.setItem_name(idtemp);
 			}
 			else if(read_item_temp.equals("typeLine"))// 베이스 타입 체크
@@ -110,17 +112,21 @@ public class JSONCHECK_CHARACTER {
 		
 		json_reader.endObject();
 		
-		
-		if(hassocket)
+		if(!temp_item.getInventoryID().contains("2"))
 		{
-			character.add_socket_item(temp_item);
-		}
-		
-		if(temp_item.getItem_type()==3)
-		{
-			character.add_Unique_item(temp_item);
+			if(hassocket)
+			{
+				character.add_socket_item(temp_item);
+			}
 			
+			if(temp_item.getItem_type()==3)
+			{
+				character.add_Unique_item(temp_item);
+				
+			}
 		}
+		
+		
 		
 	}
 	public ITEM read_socket(JsonReader json_reader, ITEM item) throws IOException
@@ -180,7 +186,15 @@ public class JSONCHECK_CHARACTER {
 			}
 			else if(read_temp.equals("typeLine"))
 			{
-				temp_gem.setGem_name(json_reader.nextString());
+				String idtemp = json_reader.nextString();
+				char c = 39;
+				if(idtemp.contains(String.valueOf(c)))
+				{
+					idtemp = idtemp.replace("'", String.valueOf(c)+String.valueOf(c));
+					
+				}
+				
+				temp_gem.setGem_name(idtemp);
 			}
 			else if(read_temp.equals("socket"))
 			{

@@ -10,14 +10,14 @@ public class ACCOUNTCHARACTER {
 	private String twitch_ID;
 	private ArrayList<ITEM> unique_item_list;
 	private ArrayList<ITEM> has_socket_item_list;
-	private ArrayList<String> herald_aura_curse;
-	private ArrayList<String> active_skill; // skill has over 4 Link
+	private ArrayList<GEM> herald_aura_curse;
+	private ArrayList<GEM> active_skill; // skill has over 4 Link
 	public ACCOUNTCHARACTER()
 	{
 		this.unique_item_list = new ArrayList<ITEM>();
 		this.has_socket_item_list = new ArrayList<ITEM>();
-		this.herald_aura_curse = new ArrayList<String>();
-		this.active_skill = new ArrayList<String>();
+		this.herald_aura_curse = new ArrayList<GEM>();
+		this.active_skill = new ArrayList<GEM>();
 	}
 	public ACCOUNTCHARACTER(String id, String name)
 	{
@@ -26,8 +26,8 @@ public class ACCOUNTCHARACTER {
 
 		this.unique_item_list = new ArrayList<ITEM>();
 		this.has_socket_item_list = new ArrayList<ITEM>();
-		this.herald_aura_curse = new ArrayList<String>();
-		this.active_skill = new ArrayList<String>();
+		this.herald_aura_curse = new ArrayList<GEM>();
+		this.active_skill = new ArrayList<GEM>();
 	}
 	public ACCOUNTCHARACTER(String id, String cha_class, String name)
 	{
@@ -37,40 +37,44 @@ public class ACCOUNTCHARACTER {
 
 		this.unique_item_list = new ArrayList<ITEM>();
 		this.has_socket_item_list = new ArrayList<ITEM>();
-		this.herald_aura_curse = new ArrayList<String>();
-		this.active_skill = new ArrayList<String>();
+		this.herald_aura_curse = new ArrayList<GEM>();
+		this.active_skill = new ArrayList<GEM>();
 	}
 
 
 	public void check_socketitem_gems()
 	{
 
-		ArrayList<String> temp_active_gem_list;
+		ArrayList<GEM> temp_active_gem_list;
 		for(ITEM temp_item :this.has_socket_item_list)
 		{
 			int support_count=0;
-			temp_active_gem_list = new ArrayList<String>();
+			temp_active_gem_list = new ArrayList<GEM>();
 
 			for(GEM temp_gem:temp_item.getSocketed_gems())
 			{
 				//aura herald curse
+				temp_gem.setSocketed_item_inventory_id(temp_item.getInventoryID());
 				if(temp_gem.isAura_herald_curse())
 				{
-					this.herald_aura_curse.add(temp_gem.getGem_name());
+					this.herald_aura_curse.add(temp_gem);
 				}
-				if(temp_gem.isSupport())
+				else if(temp_gem.isSupport())
 				{
 					support_count++;
 				}
-				if(!temp_gem.isSupport())
+				
+				else if(!temp_gem.isSupport())
 				{
-					temp_active_gem_list.add(temp_gem.getGem_name());
+					
+					temp_active_gem_list.add(temp_gem);
 				}
+				
 			}
 
 			if(support_count>=3)
 			{
-				for(String temp_string : temp_active_gem_list)
+				for(GEM temp_string : temp_active_gem_list)
 				{
 					this.active_skill.add(temp_string);
 
@@ -82,7 +86,7 @@ public class ACCOUNTCHARACTER {
 
 	}
 
-	public void add_active_skill(String skill_name)
+	public void add_active_skill(GEM skill_name)
 	{
 		this.active_skill.add(skill_name);
 	}
@@ -95,7 +99,7 @@ public class ACCOUNTCHARACTER {
 	{
 		this.has_socket_item_list.add(item);
 	}
-	public void add_herald_aura_curse(String herald_aura_curse_name)
+	public void add_herald_aura_curse(GEM herald_aura_curse_name)
 	{
 		this.herald_aura_curse.add(herald_aura_curse_name);
 	}
@@ -146,11 +150,11 @@ public class ACCOUNTCHARACTER {
 	{
 		return this.has_socket_item_list;
 	}
-	public ArrayList<String> getHearld_aura_curse_list()
+	public ArrayList<GEM> getHearld_aura_curse_list()
 	{
 		return this.herald_aura_curse;
 	}
-	public ArrayList<String> getActive_skill_list()
+	public ArrayList<GEM> getActive_skill_list()
 	{
 		return this.active_skill;
 	}
