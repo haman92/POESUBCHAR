@@ -66,10 +66,10 @@ public class Main {
 
 	
 
-		//catchladder = new CatchLadder();
+		catchladder = new CatchLadder();
 	
 		long currenttime = System.currentTimeMillis();
-		
+		/*
 		
 		System.out.println(((currenttime/1000)%86400)/3600);
 		while(true)
@@ -79,7 +79,7 @@ public class Main {
 				System.out.println("df");
 				
 				try {
-					Thread.sleep(3600000);
+					Thread.sleep(600000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -92,11 +92,11 @@ public class Main {
 				e.printStackTrace();
 			}
 		}
-		
+		*/
 		//catchladder.run();
 		//catchc.run();
 		//catchc.getOneCharacter();
-		/*
+		
 		catchladder.run();
 		
 		catchc = new CatchCHARACTER(catchladder.getArray(),catchladder.getDate(),catchladder.getvariabletTotal());
@@ -106,7 +106,7 @@ public class Main {
 		
 		System.out.println("checktime"+(currenttime2-currenttime));
 		//catchladder.getTotal();
-	*/
+	
 
 		
 		//return ;

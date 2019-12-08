@@ -111,6 +111,11 @@ public class JSONCHECK_CHARACTER {
 		}
 		
 		json_reader.endObject();
+		if(temp_item.getItem_type()==3)
+		{
+			character.add_Unique_item(temp_item);
+			
+		}
 		
 		if(!temp_item.getInventoryID().contains("2"))
 		{
@@ -119,11 +124,7 @@ public class JSONCHECK_CHARACTER {
 				character.add_socket_item(temp_item);
 			}
 			
-			if(temp_item.getItem_type()==3)
-			{
-				character.add_Unique_item(temp_item);
-				
-			}
+			
 		}
 		
 		
