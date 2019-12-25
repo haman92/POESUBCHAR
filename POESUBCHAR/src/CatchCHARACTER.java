@@ -108,7 +108,7 @@ public class CatchCHARACTER {
 				try
 				{
 
-					Thread.sleep(1000);
+					Thread.sleep(1400);
 				}catch(Exception e)
 				{
 					e.printStackTrace();
@@ -117,6 +117,8 @@ public class CatchCHARACTER {
 				String acc_ID = temp_acc.getAccount_name();
 				String cha_name = temp_acc.getCharacter_name();
 
+				System.out.println(acc_ID+"/////"+cha_name);
+				
 				url_string = "https://www.pathofexile.com/character-window/get-items?accountName="+acc_ID+"&character="+cha_name;
 				try {
 					url = new URL(url_string);
@@ -152,13 +154,14 @@ public class CatchCHARACTER {
 						{
 							System.out.println("activegem false");
 						}
-						if(!db.insertusing_hearald_curse_aura(temp_acc, this.date))
-						{
-							System.out.println("herald_curse_aura false");
-						}
+						
 						if(!db.insertusing_uniqueitem(temp_acc, this.date))
 						{
 							System.out.println("uniqueitem false");
+						}
+						if(!db.insertusing_hearald_curse_aura(temp_acc, this.date))
+						{
+							System.out.println("herald_curse_aura false");
 						}
 						db.close();
 					}

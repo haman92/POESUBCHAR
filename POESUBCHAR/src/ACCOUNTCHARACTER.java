@@ -12,6 +12,7 @@ public class ACCOUNTCHARACTER {
 	private ArrayList<ITEM> has_socket_item_list;
 	private ArrayList<GEM> herald_aura_curse;
 	private ArrayList<GEM> active_skill; // skill has over 4 Link
+	
 	public ACCOUNTCHARACTER()
 	{
 		this.unique_item_list = new ArrayList<ITEM>();
@@ -54,19 +55,39 @@ public class ACCOUNTCHARACTER {
 			for(GEM temp_gem:temp_item.getSocketed_gems())
 			{
 				//aura herald curse
+				boolean flag = true;
 				temp_gem.setSocketed_item_inventory_id(temp_item.getInventoryID());
 				if(temp_gem.isAura_herald_curse())
 				{
-					this.herald_aura_curse.add(temp_gem);
+					if(temp_gem.getGem_name().contains("Mine"))
+					{
+						temp_active_gem_list.add(temp_gem);
+						continue;
+					}
+					
+					for(GEM temp_ahc_gem:this.herald_aura_curse)
+					{
+						if(!temp_ahc_gem.isNameEqual(temp_ahc_gem, temp_gem))
+						{
+							flag = flag&&true;
+						}else
+						{
+							flag = flag&&false;
+						}
+					}
+					
+					if(flag)
+					{
+						this.herald_aura_curse.add(temp_gem);
+					}
+					
 				}
 				else if(temp_gem.isSupport())
 				{
 					support_count++;
 				}
-				
 				else if(!temp_gem.isSupport())
 				{
-					
 					temp_active_gem_list.add(temp_gem);
 				}
 				
@@ -77,7 +98,6 @@ public class ACCOUNTCHARACTER {
 				for(GEM temp_string : temp_active_gem_list)
 				{
 					this.active_skill.add(temp_string);
-
 				}
 			}
 

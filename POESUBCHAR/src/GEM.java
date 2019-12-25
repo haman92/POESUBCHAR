@@ -16,6 +16,15 @@ public class GEM {
 		group_number=-1;
 	}
 	
+	public boolean isNameEqual(GEM gem1, GEM gem2)
+	{
+		if(gem1.getGem_name().equals(gem2.getGem_name()))
+		{
+			return true;
+		}else
+			return false;
+	}
+	
 	public boolean isSupport() {
 		return support;
 	}

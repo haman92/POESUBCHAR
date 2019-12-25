@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.Scanner;
 public class Main {
@@ -12,8 +14,16 @@ public class Main {
 	
 	public static void main(String[] args) 
 	{
-		CatchLadder catchladder;
-		CatchCHARACTER catchc;
+		/*
+		String str = "한글";
+		URLEncoder urlencoder;
+		try {
+			System.out.println(new String(URLEncoder.encode(str, "UTF-8")));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
 		/*
 		
 		File f = new File("path of exile streamer.txt");
@@ -64,26 +74,36 @@ public class Main {
         }
 */
 
+		CatchLadder catchladder;
+		CatchCHARACTER catchc;
 	
 
-		catchladder = new CatchLadder();
-	
-		long currenttime = System.currentTimeMillis();
-		/*
+
 		
-		System.out.println(((currenttime/1000)%86400)/3600);
 		while(true)
 		{
+
+
+			long currenttime = System.currentTimeMillis();
+			System.out.println(((currenttime/1000)%86400)/3600);
 			if((((currenttime/1000)%86400)/3600)==0)
 			{
-				System.out.println("df");
+
+				currenttime = System.currentTimeMillis();
+
+				catchladder = new CatchLadder();
+			
+				catchladder.run();
 				
-				try {
-					Thread.sleep(600000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				//래더 의 캐릭터
+				catchc = new CatchCHARACTER(catchladder.getArray(),catchladder.getDate(),catchladder.getvariabletTotal());
+				catchc.run();
+				
+				long currenttime2 = System.currentTimeMillis();
+				
+				System.out.println("checktime"+(currenttime2-currenttime));
+				catchladder = null;
+				catchc = null;
 			}
 			try {
 				Thread.sleep(60000);
@@ -92,19 +112,13 @@ public class Main {
 				e.printStackTrace();
 			}
 		}
-		*/
+		
 		//catchladder.run();
 		//catchc.run();
 		//catchc.getOneCharacter();
-		
-		catchladder.run();
-		
-		catchc = new CatchCHARACTER(catchladder.getArray(),catchladder.getDate(),catchladder.getvariabletTotal());
-		catchc.run();
-		
-		long currenttime2 = System.currentTimeMillis();
-		
-		System.out.println("checktime"+(currenttime2-currenttime));
+	
+		//래더
+
 		//catchladder.getTotal();
 	
 

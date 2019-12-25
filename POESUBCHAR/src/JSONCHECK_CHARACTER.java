@@ -126,10 +126,9 @@ public class JSONCHECK_CHARACTER {
 			
 			
 		}
-		
-		
-		
+
 	}
+	
 	public ITEM read_socket(JsonReader json_reader, ITEM item) throws IOException
 	{
 		String sockettemp;
@@ -173,6 +172,7 @@ public class JSONCHECK_CHARACTER {
 		json_reader.endArray();
 		return item;
 	}
+	
 	public GEM read_socketgems(JsonReader json_reader) throws IOException
 	{
 		GEM temp_gem = new GEM();
@@ -214,6 +214,7 @@ public class JSONCHECK_CHARACTER {
 		
 		return temp_gem;
 	}
+	
 	public GEM read_gem_properties(JsonReader json_reader, GEM gem) throws IOException
 	{
 		
@@ -265,4 +266,5 @@ public class JSONCHECK_CHARACTER {
 		}
 		json_reader.endArray();
 	}
+	
 }

@@ -1,6 +1,7 @@
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 
@@ -84,6 +85,7 @@ public class JSONCHECK_LADDER {
 	{
 		json_reader = new JsonReader(sr);
 		ACCOUNTCHARACTER character = null;
+		//json_reader.setLenient(true);
 		json_reader.beginObject();
 
 		while(json_reader.hasNext()==true)
@@ -138,6 +140,7 @@ public class JSONCHECK_LADDER {
 				add = read_character(json_reader,add);
 			}else if(read_temp_id.equals("account"))
 			{
+				
 				add = read_account(json_reader, add);
 			}
 			else
@@ -159,7 +162,8 @@ public class JSONCHECK_LADDER {
 			read_temp_character = json_reader.nextName();
 			if(read_temp_character.equals("name"))
 			{
-				add.setCharacter_name(json_reader.nextString());
+				String temp_encode = new String(URLEncoder.encode(json_reader.nextString(), "UTF-8"));
+				add.setCharacter_name(temp_encode);
 			}
 			else if(read_temp_character.equals("class"))
 			{
@@ -267,7 +271,8 @@ public class JSONCHECK_LADDER {
 			read_temp_account = json_reader.nextName();
 			if(read_temp_account.equals("name"))
 			{
-				add.setAccount_name(json_reader.nextString());
+				String temp_encode = new String(URLEncoder.encode(json_reader.nextString(), "UTF-8"));
+				add.setAccount_name(temp_encode);
 			}
 			else if(read_temp_account.equals("twitch"))
 			{
