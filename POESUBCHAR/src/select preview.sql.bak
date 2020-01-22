@@ -1,0 +1,95 @@
+
+select row_number() over (order by gemcount desc) as num, ascendancy,gemname, gemcount
+from ascendancy_activegem_count
+where labyrinthladderdate ='2020-01-10' and ascendancy ='Ascendant'
+Limit 3;
+
+select row_number() over (order by gemcount desc) as num, ascendancy,gemname, gemcount
+from ascendancy_activegem_count
+where labyrinthladderdate ='2020-01-10' and ascendancy ='Assassin'
+Limit 3;
+
+select row_number() over (order by gemcount desc) as num, ascendancy,gemname, gemcount
+from ascendancy_activegem_count
+where labyrinthladderdate ='2020-01-10' and ascendancy ='Berserker'
+Limit 3;
+
+select row_number() over (order by gemcount desc) as num, ascendancy,gemname, gemcount
+from ascendancy_activegem_count
+where labyrinthladderdate ='2020-01-10' and ascendancy ='Champion'
+Limit 3;
+
+select row_number() over (order by gemcount desc) as num, ascendancy,gemname, gemcount
+from ascendancy_activegem_count
+where labyrinthladderdate ='2020-01-10' and ascendancy ='Chieftain'
+Limit 3;
+
+select row_number() over (order by gemcount desc) as num, ascendancy,gemname, gemcount
+from ascendancy_activegem_count
+where labyrinthladderdate ='2020-01-10' and ascendancy ='Deadeye'
+Limit 3;
+
+select row_number() over (order by gemcount desc) as num, ascendancy,gemname, gemcount
+from ascendancy_activegem_count
+where labyrinthladderdate ='2020-01-10' and ascendancy ='Elementalist'
+Limit 3;
+
+select row_number() over (order by gemcount desc) as num, ascendancy,gemname, gemcount
+from ascendancy_activegem_count
+where labyrinthladderdate ='2020-01-10' and ascendancy ='Gladiator'
+Limit 3;
+
+select row_number() over (order by gemcount desc) as num, ascendancy,gemname, gemcount
+from ascendancy_activegem_count
+where labyrinthladderdate ='2020-01-10' and ascendancy ='Guardian'
+Limit 3;
+
+select row_number() over (order by gemcount desc) as num, ascendancy,gemname, gemcount
+from ascendancy_activegem_count
+where labyrinthladderdate ='2020-01-10' and ascendancy ='Hierophant'
+Limit 3;
+
+select row_number() over (order by gemcount desc) as num, ascendancy,gemname, gemcount
+from ascendancy_activegem_count
+where labyrinthladderdate ='2020-01-10' and ascendancy ='Inquisitor'
+Limit 3;
+
+select row_number() over (order by gemcount desc) as num, ascendancy,gemname, gemcount
+from ascendancy_activegem_count
+where labyrinthladderdate ='2020-01-10' and ascendancy ='Juggernaut'
+Limit 3;
+
+select row_number() over (order by gemcount desc) as num, ascendancy,gemname, gemcount
+from ascendancy_activegem_count
+where labyrinthladderdate ='2020-01-10' and ascendancy ='Necromancer'
+Limit 3;
+
+select row_number() over (order by gemcount desc) as num, ascendancy,gemname, gemcount
+from ascendancy_activegem_count
+where labyrinthladderdate ='2020-01-10' and ascendancy ='Occultist'
+Limit 3;
+
+select row_number() over (order by gemcount desc) as num, ascendancy,gemname, gemcount
+from ascendancy_activegem_count
+where labyrinthladderdate ='2020-01-10' and ascendancy ='Pathfinder'
+Limit 3;
+
+select row_number() over (order by gemcount desc) as num, ascendancy,gemname, gemcount
+from ascendancy_activegem_count
+where labyrinthladderdate ='2020-01-10' and ascendancy ='Raider'
+Limit 3;
+
+select row_number() over (order by gemcount desc) as num, ascendancy,gemname, gemcount
+from ascendancy_activegem_count
+where labyrinthladderdate ='2020-01-10' and ascendancy ='Saboteur'
+Limit 3;
+
+select row_number() over (order by gemcount desc) as num, ascendancy,gemname, gemcount
+from ascendancy_activegem_count
+where labyrinthladderdate ='2020-01-10' and ascendancy ='Slayer'
+Limit 3;
+
+select row_number() over (order by gemcount desc) as num, ascendancy,gemname, gemcount
+from ascendancy_activegem_count
+where labyrinthladderdate ='2020-01-10' and ascendancy ='Trickster'
+Limit 3;
