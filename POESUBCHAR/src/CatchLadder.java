@@ -109,6 +109,7 @@ public class CatchLadder{
 		int month = time.get(time.MONTH)+1;
 		int date = time.get(time.DATE);
 		
+		
 		this.date_string = String.valueOf(year)+String.valueOf(month)+String.valueOf(date);
 		if(month<10)
 		{
@@ -118,12 +119,13 @@ public class CatchLadder{
 		{
 			this.date_string= String.valueOf(year)+String.valueOf(month)+"0"+String.valueOf(date);
 		}
+		
 		if(month<10&&date<10)
 		{
 			this.date_string= String.valueOf(year)+"0"+String.valueOf(month)+"0"+String.valueOf(date);
 		}
 		
-		String stime = String.valueOf(year)+String.valueOf(month)+String.valueOf(date)+" 09";
+		String stime = this.date_string+" 09";
 		Date date1=null;
 		try {
 			date1 = dateformat.parse(stime);
@@ -256,7 +258,7 @@ public class CatchLadder{
 		DBConnection db = new DBConnection();
 		if(db.connect())
 		{
-			boolean flag = db.insertLabyrinthLadder(total, check.getAscendant(), check.getAssasin(), check.getBerserker(), check.getChampion(),check.getChieftain(),check.getDeadeye(), check.getElementalist(), check.getGuardian(), check.getGladiator(), check.getHierophant(), check.getInquisitor(), check.getJuggernaut(), check.getNecromancer(),check.getOccultist(), check.getRaider(), check.getSaboteur(), check.getSaboteur(), check.getTrickster(), this.date_string);
+			boolean flag = db.insertLabyrinthLadder(total, check.getAscendant(), check.getAssasin(), check.getBerserker(), check.getChampion(),check.getChieftain(),check.getDeadeye(), check.getElementalist(), check.getGuardian(), check.getGladiator(), check.getHierophant(), check.getInquisitor(), check.getJuggernaut(), check.getNecromancer(),check.getOccultist(), check.getRaider(), check.getSaboteur(), check.getSlayer(), check.getTrickster(),check.getPathfinder(), this.date_string);
 			
 				db.close();
 		}

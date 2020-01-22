@@ -59,7 +59,7 @@ public class ACCOUNTCHARACTER {
 				temp_gem.setSocketed_item_inventory_id(temp_item.getInventoryID());
 				if(temp_gem.isAura_herald_curse())
 				{
-					if(temp_gem.getGem_name().contains("Mine"))
+					if(temp_gem.getGem_name().contains("Mine")&& !temp_gem.getGem_name().contains("Support"))
 					{
 						temp_active_gem_list.add(temp_gem);
 						continue;
